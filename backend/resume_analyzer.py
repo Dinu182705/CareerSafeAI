@@ -15,9 +15,6 @@ for skill in skills_db["skill_name"]:
     if skill.lower() in resume_text.lower():
         detected_skills.append(skill)
 
-print("\nDetected Skills:")
-print(detected_skills)
-
 # Career Analysis
 best_job = ""
 best_score = 0
@@ -65,15 +62,18 @@ for index, row in jobs.iterrows():
             for _, course in result.iterrows():
                 best_courses.append(course["course_name"])
 
+# CareerSafe Score
+career_safe_score = round(best_score / 10, 1)
+
 # Final Report
 print("\n")
-print("=" * 40)
-print("        CAREERSAFE AI REPORT")
-print("=" * 40)
+print("=" * 45)
+print("           CAREERSAFE AI REPORT")
+print("=" * 45)
 
 print("\nDetected Skills:")
 for skill in detected_skills:
-    print("-", skill)
+    print("✔", skill)
 
 print("\nBest Career:")
 print(best_job)
@@ -84,10 +84,17 @@ print(f"{best_score:.2f}%")
 print("\nCareer Risk:")
 print(best_risk)
 
+print("\nCareerSafe Score:")
+print(f"{career_safe_score}/10")
+
+print("\nStrengths:")
+for skill in detected_skills:
+    print("✔", skill)
+
 print("\nSkills To Learn:")
 if best_missing:
     for skill in best_missing:
-        print("-", skill)
+        print("✖", skill)
 else:
     print("None")
 
@@ -98,4 +105,19 @@ if best_courses:
 else:
     print("No courses required")
 
-print("\n" + "=" * 40)
+print("\nLearning Roadmap:")
+
+if best_courses:
+
+    week = 1
+
+    for course in best_courses:
+        print(f"\nWeek {week}:")
+        print("-", course)
+
+        week += 1
+
+else:
+    print("You are already career ready! 🚀")
+
+print("\n" + "=" * 45)
