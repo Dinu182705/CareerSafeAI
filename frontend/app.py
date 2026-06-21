@@ -171,6 +171,21 @@ if st.button("🔍 Analyze Resume"):
             "Analysis Complete 🚀"
         )
 
+        # Dashboard Cards
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.metric("🎯 Career Match", f"{best_score:.0f}%")
+
+        with col2:
+            st.metric("⚠️ Risk Level", best_risk.split()[0])
+
+        with col3:
+            st.metric("🧠 Skills Found", len(detected_skills))
+
+        with col4:
+            st.metric("📚 Courses Needed", len(best_courses))
+
         st.header(
             "📊 Career Report"
         )
