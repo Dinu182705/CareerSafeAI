@@ -1,9 +1,20 @@
 skill_name,category,difficulty
 Python,Programming,Medium
 Java,Programming,Medium
-SQL,Database,Easy
+SQL,Database,Medium
 Machine Learning,AI,Hard
 Data Analysis,Analytics,Medium
-Communication,Soft Skill,Easy
-Problem Solving,Soft Skill,Medium
 Git,Tools,Easy
+Communication,Soft Skills,Easy
+Problem Solving,Soft Skills,Medium
+MATLAB,Software,Medium
+RF,Engineering,Hard
+Wireless,Engineering,Medium
+GSM,Telecom,Medium
+Networking,Telecom,Medium
+Fiber Optics,Telecom,Hard
+Circuits,Electronics,Medium
+Electronics,Electronics,Medium
+Embedded Systems,Electronics,Hard
+Linux,Tools,Medium
+C++,Programming,Medium
