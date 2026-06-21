@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pdfplumber
+import matplotlib.pyplot as plt
 
 # Page config
 st.set_page_config(
@@ -8,6 +9,22 @@ st.set_page_config(
     page_icon="🚀",
     layout="wide"
 )
+
+st.markdown("""
+<style>
+h1 {
+    color: #4CAF50;
+}
+
+h2 {
+    color: #4CAF50;
+}
+
+h3 {
+    color: #4CAF50;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Load datasets
 skills_db = pd.read_csv("../dataset/skills.csv")
@@ -237,9 +254,31 @@ if st.button("🔍 Analyze Resume"):
             )
 
         # ------------------------
-        # MATCH SCORE
+        # SKILLS ANALYTICS
         # ------------------------
 
+        st.subheader("📊 Skills Analytics")
+
+        if detected_skills:
+
+            fig, ax = plt.subplots()
+
+            ax.bar(
+                detected_skills,
+                [1] * len(detected_skills)
+            )
+
+            ax.set_ylabel("Detected")
+            ax.set_title("Detected Skills")
+
+            plt.xticks(rotation=45)
+
+            st.pyplot(fig)    
+
+        # ------------------------
+        # MATCH SCORE
+        # ------------------------
+        
         st.subheader(
             "📈 Match Score"
         )
@@ -394,8 +433,18 @@ CareerSafe Score: {career_safe_score}/10
 # FOOTER
 # ------------------------
 
+
 st.markdown("---")
 
-st.caption(
-    "Built with ❤️ using Python, Streamlit & AI"
-)
+st.markdown("""
+### 🚀 CareerSafe AI v1.0
+
+Developed using:
+- Python
+- Streamlit
+- Pandas
+- PDFPlumber
+- Matplotlib
+
+© 2026 CareerSafe AI
+""")
