@@ -27,9 +27,9 @@ h3 {
 """, unsafe_allow_html=True)
 
 # Load datasets
-skills_db = pd.read_csv("../dataset/skills.csv")
-jobs = pd.read_csv("../dataset/jobs.csv")
-courses = pd.read_csv("../dataset/courses.csv")
+skills_db = pd.read_csv("dataset/skills.csv")
+jobs = pd.read_csv("dataset/jobs.csv")
+courses = pd.read_csv("dataset/courses.csv")
 
 skills_db.columns = skills_db.columns.str.strip()
 jobs.columns = jobs.columns.str.strip()
