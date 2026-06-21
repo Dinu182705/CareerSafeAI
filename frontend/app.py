@@ -1,33 +1,56 @@
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(
+    page_title="CareerSafe AI",
+    page_icon="🚀",
+    layout="wide"
+)
+
 # Load datasets
 skills_db = pd.read_csv("../dataset/skills.csv")
 jobs = pd.read_csv("../dataset/jobs.csv")
 courses = pd.read_csv("../dataset/courses.csv")
 
+# Sidebar
+st.sidebar.title("🚀 CareerSafe AI")
+
+st.sidebar.info("""
+CareerSafe AI helps students identify:
+
+✔ Best Career Path
+
+✔ Skill Gaps
+
+✔ Career Risk
+
+✔ Learning Roadmap
+""")
+
+# Main UI
 st.title("🚀 CareerSafe AI")
-st.subheader("AI Career Risk Analyzer")
+st.markdown("### AI Powered Career Risk Analyzer & Learning Guide")
 
-resume_text = st.text_area("Paste Your Resume Here")
+resume_text = st.text_area(
+    "📄 Paste Your Resume Here",
+    height=200
+)
 
-if st.button("Analyze Resume"):
+if st.button("🔍 Analyze Resume"):
 
-    # Detect Skills
     detected_skills = []
 
     for skill in skills_db["skill_name"]:
         if skill.lower() in resume_text.lower():
             detected_skills.append(skill)
 
-    # Career Analysis
     best_job = ""
     best_score = 0
     best_risk = ""
     best_missing = []
     best_courses = []
 
-    for index, row in jobs.iterrows():
+    for _, row in jobs.iterrows():
 
         job = row["job_role"]
         required = row["required_skills"].split(",")
@@ -54,6 +77,7 @@ if st.button("Analyze Resume"):
             risk = "HIGH 🔴"
 
         if score > best_score:
+
             best_score = score
             best_job = job
             best_risk = risk
@@ -62,59 +86,116 @@ if st.button("Analyze Resume"):
             best_courses = []
 
             for skill in missing:
-                result = courses[courses["skill_covered"] == skill]
+
+                result = courses[
+                    courses["skill_covered"] == skill
+                ]
 
                 for _, course in result.iterrows():
-                    best_courses.append(course["course_name"])
+                    best_courses.append(
+                        course["course_name"]
+                    )
 
-    career_safe_score = round(best_score / 10, 1)
+    career_safe_score = round(
+        best_score / 10,
+        1
+    )
 
-    # Display Report
-    st.success("Analysis Complete!")
+    st.success("✅ Analysis Complete!")
 
     st.header("📊 Career Report")
 
-    st.subheader("Detected Skills")
+    st.subheader("🎯 Detected Skills")
+
     for skill in detected_skills:
         st.write("✔", skill)
 
-    st.subheader("Best Career")
-    st.write(best_job)
+    st.subheader("💼 Best Career")
 
-    st.subheader("Match Score")
+    st.success(best_job)
+
+    st.subheader("📈 Match Score")
+
+    st.progress(int(best_score))
+
     st.write(f"{best_score:.2f}%")
 
-    st.subheader("Career Risk")
-    st.write(best_risk)
+    st.subheader("⚠️ Career Risk")
 
-    st.subheader("CareerSafe Score")
-    st.write(f"{career_safe_score}/10")
+    if "LOW" in best_risk:
+        st.success(best_risk)
 
-    st.subheader("Skills To Learn")
+    elif "MEDIUM" in best_risk:
+        st.warning(best_risk)
+
+    else:
+        st.error(best_risk)
+
+    st.subheader("🏆 CareerSafe Score")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col2:
+        st.metric(
+            label="Score",
+            value=f"{career_safe_score}/10"
+        )
+
+    st.subheader("🧠 Skills To Learn")
 
     if best_missing:
         for skill in best_missing:
             st.write("✖", skill)
     else:
-        st.write("None")
+        st.success("No Skill Gaps Found")
 
-    st.subheader("Recommended Courses")
+    st.subheader("📚 Recommended Courses")
 
     if best_courses:
         for course in best_courses:
-            st.write("-", course)
+            st.write("📘", course)
     else:
-        st.write("No courses required")
+        st.success("No courses required")
 
-    st.subheader("Learning Roadmap")
+    st.subheader("🗺️ Learning Roadmap")
 
     if best_courses:
 
         week = 1
 
         for course in best_courses:
-            st.write(f"Week {week}: {course}")
+
+            st.write(
+                f"Week {week}: {course}"
+            )
+
             week += 1
 
     else:
-        st.success("You are already career ready! 🚀")
+        st.success(
+            "🚀 You are already career ready!"
+        )
+
+    report = f"""
+CAREERSAFE AI REPORT
+
+Best Career: {best_job}
+
+Match Score: {best_score:.2f}%
+
+Career Risk: {best_risk}
+
+CareerSafe Score: {career_safe_score}/10
+"""
+
+    st.download_button(
+        label="📥 Download Report",
+        data=report,
+        file_name="CareerSafe_Report.txt",
+        mime="text/plain"
+    )
+
+st.markdown("---")
+st.caption(
+    "Built with ❤️ using Python, Streamlit & AI"
+)
