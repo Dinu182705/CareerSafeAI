@@ -1,0 +1,1 @@
+print("CareerSafe AI Started Successfully")
